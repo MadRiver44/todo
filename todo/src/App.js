@@ -85,6 +85,19 @@ class App extends Component {
     );
   }
 
+  renderSelectedTodo(todoId) {
+    let content;
+    if(this.state.currentTodo) {
+      let currentTodo = this.state.todos[this.state.currentTodo];
+      content = (
+        <div>
+          <h1>{currentTodo.title} </h1>
+        </div>
+        );
+    }
+    return content;
+  }
+
   renderTodoList() {
     let todoElements = [];
 
@@ -122,8 +135,8 @@ class App extends Component {
           <div className="col-6 px-4">
             {this.renderNewTodoBox()}
             {this.renderTodoList()}
-
           </div>
+          <div className="col-6 px-4">{this.renderSelectedTodo()}</div>
         </div>
       </div>
     );

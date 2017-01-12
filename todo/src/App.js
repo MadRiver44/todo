@@ -7,7 +7,9 @@ import './App.css';
 class App extends Component {
   constructor() {
     super();
-    this.state = { todos: {} };
+    this.state = {
+      todos: {}
+    };
 
     this.handleNewTodoInput = this.handleNewTodoInput.bind(this);
     this.deleteTodo = this.deleteTodo.bind(this);
@@ -50,16 +52,21 @@ class App extends Component {
 
   deleteTodo(todoId){
     axios({
-      url:`/todos${todoId}.json`,
+      url:`/todos/${todoId}.json`,
       baseURL: 'https://todo-app-f7821.firebaseio.com/',
       method: "DELETE",
     }).then((resp) => {
       let todos = this.state.todos;
       delete todos[todoId];
-      this.setState( {todos} )
+      this.setState( {todos: todos} )
     }).catch((error) =>{
       console.log(error);
     })
+  }
+
+  selectTodo(todoId) {
+    this.setState( { currentTodo: todoId} )
+
   }
 
   handleNewTodoInput(event) {
@@ -86,18 +93,20 @@ class App extends Component {
 
       todoElements.push(
         <div className="todo d-flex justify-content-between pb-4" key={todoId}>
-          <div className="mt-2">
+          <div className="mt-2" onClick={ () => this.selectTodo(todoId) }>
             <h4>{todo.title}</h4>
             <div>{moment(todo.createdAt).calendar()}</div>
           </div>
-            <button
+          <button
             className="ml-4 btn btn-link"
-            onClick={ () => { this.deleteTodo(todoId) } }>
+            onClick={ () => { this.deleteTodo(todoId) } }
+          >
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
       );
     }
+
 
     return (
       <div className="todo-list">
